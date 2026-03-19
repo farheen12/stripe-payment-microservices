@@ -1,71 +1,70 @@
 # 💳 Stripe Payment Microservices
 
-A microservice-based system for handling secure payment processing using Stripe.
+A microservice-based system for secure payment processing using Stripe.
 
 ---
 
 ## 🏗️ Services
-### 🔹 Payment Processing Service (PPS)
-- Manages transaction lifecycle
-- Handles business logic
-- Stores transaction details in DB
 
-### 🔹 Stripe Provider Service (SPS)
+### Payment Processing Service (PPS)
+- Manages transaction lifecycle
+- Handles business logic & DB updates
+
+### Stripe Provider Service (SPS)
 - Communicates with Stripe APIs
-- Returns payment session details to PPS
+- Returns session details to PPS
 
 ---
 
 ## 🔄 Payment Flow
 
-### 1️⃣ Create Transaction
+### 1. Create Transaction
 - Generate `txnReferenceId`
 - Status → `CREATED`
 
-### 2️⃣ Initiate Payment
-- Fetch transaction using `txnReferenceId`
+### 2. Initiate Payment
+- Fetch transaction
 - Status → `INITIATED`
-- Call SPS → Stripe API
+- Call SPS → Stripe
 - Store `providerId`, `checkoutUrl`
 - Status → `PENDING`
 
-### 3️⃣ Webhook Processing
-- Stripe sends payment events
+### 3. Webhook Processing
+- Stripe sends events
 - Signature verified (HMAC SHA256)
-- Events processed asynchronously
-- Status updated in DB
+- Processed asynchronously
+- DB updated with latest status
 
 ---
 
-## ⚙️ Key Highlights
+## ⚙️ Key Features
 
-- ✔ Factory Design Pattern for status updates  
-- ✔ Async webhook handling (avoids duplicate retries)  
-- ✔ Secure Stripe signature verification  
-- ✔ Clear separation of concerns (PPS & SPS)  
-- ✔ AI-based error summarization  
+- Factory Pattern for status handling  
+- Async webhook processing (prevents duplicate retries)  
+- Stripe signature verification  
+- Clear separation of services  
+- AI-based error summarization  
 
 ---
 
 ## ⚠️ Failure Handling
 
-| Scenario           | Behavior              |
-|------------------|----------------------|
-| Invalid signature | Stripe retries       |
-| Sync failure      | Error returned       |
-| Async failure     | Logged (no retry)    |
+| Scenario           | Result              |
+|------------------|--------------------|
+| Invalid signature | Stripe retries     |
+| Sync failure      | Error returned     |
+| Async failure     | Logged (no retry)  |
 
 ---
 
-## 🚀 Future Improvements
+## 🚀 Improvements
 
 - Retry mechanism for async failures  
-- Dead Letter Queue (DLQ)  
 - Idempotency handling  
-- Monitoring & alerting  
+- Monitoring & alerts  
 
 ---
 
 ## 🧪 Tech Stack
 
-`Java` • `Spring Boot` • `Stripe API` • `REST Client` • `Async Processing`
+Java • Spring Boot • Stripe API • REST Client • Async Processing
