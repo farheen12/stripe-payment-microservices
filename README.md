@@ -1,18 +1,17 @@
-# 💳 Stripe Payment Microservices
-
-A microservice-based system for secure payment processing using Stripe.
 
 ---
 
-## 🏗️ Services
+## 🧩 Services
 
-### Payment Processing Service (PPS)
+### 🔹 Payment Processing Service (PPS)
 - Manages transaction lifecycle
-- Handles business logic & DB updates
+- Handles business logic and DB updates
+- Maintains transaction states
 
-### Stripe Provider Service (SPS)
+### 🔹 Stripe Provider Service (SPS)
 - Communicates with Stripe APIs
-- Returns session details to PPS
+- Creates payment sessions
+- Returns provider details to PPS
 
 ---
 
@@ -25,46 +24,74 @@ A microservice-based system for secure payment processing using Stripe.
 ### 2. Initiate Payment
 - Fetch transaction
 - Status → `INITIATED`
-- Call SPS → Stripe
+- Call SPS → Stripe API
 - Store `providerId`, `checkoutUrl`
 - Status → `PENDING`
 
 ### 3. Webhook Processing
-- Stripe sends events
-- Signature verified (HMAC SHA256)
-- Processed asynchronously
-- DB updated with latest status
+- Stripe sends payment events
+- Signature verified using HMAC SHA256
+- Events processed asynchronously
+- Transaction status updated in DB
 
 ---
 
 ## ⚙️ Key Features
 
-- Factory Pattern for status handling  
-- Async webhook processing (prevents duplicate retries)  
-- Stripe signature verification  
-- Clear separation of services  
-- AI-based error summarization  
+- ✔ Factory Design Pattern for status management  
+- ✔ Async webhook processing (prevents duplicate retries)  
+- ✔ Secure Stripe signature verification  
+- ✔ Microservice-based architecture  
+- ✔ AI-based error summarization for cleaner API responses  
 
 ---
 
 ## ⚠️ Failure Handling
 
-| Scenario           | Result              |
-|------------------|--------------------|
-| Invalid signature | Stripe retries     |
-| Sync failure      | Error returned     |
-| Async failure     | Logged (no retry)  |
+| Scenario                     | Behavior              |
+|----------------------------|----------------------|
+| Invalid signature           | Stripe retries       |
+| Request validation failure  | 4xx response         |
+| Downstream/service failure  | 5xx response         |
+| Async processing failure    | Logged (no retry)    |
 
 ---
 
-## 🚀 Improvements
+## 🧠 Design Decisions
 
-- Retry mechanism for async failures  
-- Idempotency handling  
-- Monitoring & alerts  
+- **Async Webhooks** → Avoid Stripe retries & duplicate DB updates  
+- **Factory Pattern** → Clean status transition handling  
+- **Service Separation** → Decouples business logic from external APIs  
+
+---
+
+## 🚀 Future Improvements
+
+- Retry mechanism (Kafka / Queue)
+- Dead Letter Queue (DLQ)
+- Idempotency handling for webhooks
+- Monitoring & alerting
 
 ---
 
 ## 🧪 Tech Stack
 
-Java • Spring Boot • Stripe API • REST Client • Async Processing
+- Java  
+- Spring Boot  
+- REST Client  
+- Stripe API  
+- Async Processing  
+
+---
+
+## ▶️ How to Run
+
+```bash
+# Clone the repository
+git clone https://github.com/farheen12/stripe-payment-microservices.git
+
+# Navigate to project
+cd stripe-payment-microservices
+
+# Run services (example)
+mvn spring-boot:run
