@@ -5,7 +5,6 @@ A microservice-based system for handling secure payment processing using Stripe.
 ---
 
 ## 🏗️ Services
-
 ### 🔹 Payment Processing Service (PPS)
 - Manages transaction lifecycle
 - Handles business logic
