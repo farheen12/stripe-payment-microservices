@@ -1,51 +1,72 @@
-💳 Payment Processing System
+# 💳 Stripe Payment Microservices
 
-A microservice-based payment system integrating Stripe for secure transaction processing.
+A microservice-based system for handling secure payment processing using Stripe.
 
-🏗️ Services
+---
 
-Payment Processing Service (PPS)
-Handles transactions, business logic, and database updates
+## 🏗️ Services
 
-Stripe Provider Service (SPS)
-Communicates with Stripe APIs
+### 🔹 Payment Processing Service (PPS)
+- Manages transaction lifecycle
+- Handles business logic
+- Stores transaction details in DB
 
-🔄 Flow
-1️⃣ Create Transaction
-Generates txnReferenceId
-Sets status → CREATED
-2️⃣ Initiate Payment
-Updates status → INITIATED
-Calls SPS → Stripe API
-Stores providerId, checkoutUrl
-Updates status → PENDING
-3️⃣ Webhook Handling
-Stripe sends events
-Signature verified using HMAC SHA256
-Events processed asynchronously
-Transaction status updated in DB
+### 🔹 Stripe Provider Service (SPS)
+- Communicates with Stripe APIs
+- Returns payment session details to PPS
 
-⚙️ Key Features
+---
 
-Factory Design Pattern for status handling
-Async webhook processing (prevents duplicate retries)
-Secure Stripe signature verification
-Clean separation of services (PPS & SPS)
-AI-based error summarization
+## 🔄 Payment Flow
 
-⚠️ Failure Handling
-Scenario	         Behavior
-Invalid signature	 Stripe retries
-Sync failure	     Proper error response
-Async failure	     Logged (no retry)
+### 1️⃣ Create Transaction
+- Generate `txnReferenceId`
+- Status → `CREATED`
 
-🚀 Improvements
+### 2️⃣ Initiate Payment
+- Fetch transaction using `txnReferenceId`
+- Status → `INITIATED`
+- Call SPS → Stripe API
+- Store `providerId`, `checkoutUrl`
+- Status → `PENDING`
 
-Retry mechanism for async failures
-Idempotency handling
+### 3️⃣ Webhook Processing
+- Stripe sends payment events
+- Signature verified (HMAC SHA256)
+- Events processed asynchronously
+- Status updated in DB
 
+---
 
+## ⚙️ Key Highlights
 
-🧪 Tech Stack
+- ✔ Factory Design Pattern for status updates  
+- ✔ Async webhook handling (avoids duplicate retries)  
+- ✔ Secure Stripe signature verification  
+- ✔ Clear separation of concerns (PPS & SPS)  
+- ✔ AI-based error summarization  
 
-Java, Spring Boot, REST Client, Stripe API, Async Processing
+---
+
+## ⚠️ Failure Handling
+
+| Scenario           | Behavior              |
+|------------------|----------------------|
+| Invalid signature | Stripe retries       |
+| Sync failure      | Error returned       |
+| Async failure     | Logged (no retry)    |
+
+---
+
+## 🚀 Future Improvements
+
+- Retry mechanism for async failures  
+- Dead Letter Queue (DLQ)  
+- Idempotency handling  
+- Monitoring & alerting  
+
+---
+
+## 🧪 Tech Stack
+
+`Java` • `Spring Boot` • `Stripe API` • `REST Client` • `Async Processing`
